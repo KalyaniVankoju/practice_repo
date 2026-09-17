@@ -2,14 +2,20 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
-
+import studentRoutes from './routes/studentRoutes.js';
+import attendanceRoutes from './routes/attendanceRoutes.js';
+import classRoutes from './routes/classRoutes.js';
 dotenv.config();
-
+import subjectRoutes from './routes/subjectRoutes.js';
 const app = express();
+
+app.use('/api/subjects', subjectRoutes);
 
 app.use(cors());
 app.use(express.json());
-
+app.use('/api/students', studentRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/classes', classRoutes);
 connectDB();
 
 const PORT = process.env.PORT || 5000;
