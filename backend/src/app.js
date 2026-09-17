@@ -5,17 +5,22 @@ import connectDB from './config/db.js';
 import studentRoutes from './routes/studentRoutes.js';
 import attendanceRoutes from './routes/attendanceRoutes.js';
 import classRoutes from './routes/classRoutes.js';
+import tutorRoutes from './routes/tutorRoutes.js';
 dotenv.config();
 import subjectRoutes from './routes/subjectRoutes.js';
 const app = express();
 
-app.use('/api/subjects', subjectRoutes);
+import tutorClassRoutes from './routes/tutorClassRoutes.js';
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/subjects', subjectRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/classes', classRoutes);
+app.use('/api/tutor', tutorRoutes);
+
+app.use('/api/classes', tutorClassRoutes);
 connectDB();
 
 const PORT = process.env.PORT || 5000;
