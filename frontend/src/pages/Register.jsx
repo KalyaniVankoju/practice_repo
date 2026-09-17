@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 function Register() {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -11,7 +10,7 @@ function Register() {
 
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -24,26 +23,35 @@ function Register() {
       return;
     }
 
-    console.log("Username:", username);
-    console.log("Password:", password);
-    console.log("Role:", role);
+    try {
+      const response = await api.post("/api/auth/register", {
+        username,
+        password,
+        role,
+      });
 
-    alert("Registration successful!");
+      console.log("Register response:", response.data);
 
-    navigate("/login");
+      alert("Registration successful!");
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
+    }
   };
 
   return (
     <div>
-
       <h1>Columbus Family</h1>
 
       <h2>Create Account</h2>
 
       <form onSubmit={handleRegister}>
-
-        {/* Username */}
-
         <div>
           <label>Username</label>
 
@@ -57,8 +65,6 @@ function Register() {
         </div>
 
         <br />
-
-        {/* Password */}
 
         <div>
           <label>Password</label>
@@ -74,8 +80,6 @@ function Register() {
 
         <br />
 
-        {/* Confirm Password */}
-
         <div>
           <label>Confirm Password</label>
 
@@ -90,8 +94,6 @@ function Register() {
 
         <br />
 
-        {/* Role */}
-
         <div>
           <label>Select Role</label>
 
@@ -100,10 +102,7 @@ function Register() {
             onChange={(e) => setRole(e.target.value)}
             required
           >
-
-            <option value="">
-              -- Select Role --
-            </option>
+            <option value="">-- Select Role --</option>
 
             <option value="student">
               Student
@@ -120,7 +119,6 @@ function Register() {
             <option value="volunteer">
               Volunteer
             </option>
-
           </select>
         </div>
 
@@ -129,7 +127,6 @@ function Register() {
         <button type="submit">
           Register
         </button>
-
       </form>
 
       <br />
@@ -137,10 +134,8 @@ function Register() {
       <button onClick={() => navigate("/login")}>
         Back to Login
       </button>
-
     </div>
   );
 }
 
 export default Register;
-
