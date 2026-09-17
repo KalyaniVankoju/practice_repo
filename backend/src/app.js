@@ -8,6 +8,8 @@ import classRoutes from './routes/classRoutes.js';
 import tutorRoutes from './routes/tutorRoutes.js';
 dotenv.config();
 import subjectRoutes from './routes/subjectRoutes.js';
+
+import programRoutes from './routes/programRoutes.js';
 const app = express();
 
 import tutorClassRoutes from './routes/tutorClassRoutes.js';
@@ -19,8 +21,8 @@ app.use('/api/students', studentRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/tutor', tutorRoutes);
-
-app.use('/api/classes', tutorClassRoutes);
+app.use('/api/programs', programRoutes);
+app.use('/api/tutor/classes', tutorClassRoutes);
 connectDB();
 
 const PORT = process.env.PORT || 5000;
