@@ -1,22 +1,42 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 function Login() {
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log("Username:", username);
-    console.log("Password:", password);
+    try {
+      const response = await api.post("/api/auth/login", {
+        username,
+        password,
+      });
 
-    // For now, pretend login is successful
-    navigate("/dashboard");
+      console.log("Login response:", response.data);
+
+      const { token, user } = response.data;
+
+      // Store login information
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("Login successful!");
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Login error:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Login failed. Please try again."
+      );
+    }
   };
 
   return (
@@ -26,7 +46,6 @@ function Login() {
       <h2>Login</h2>
 
       <form onSubmit={handleLogin}>
-
         <div>
           <label>Username</label>
 
@@ -58,19 +77,15 @@ function Login() {
         <button type="submit">
           Login
         </button>
-
       </form>
 
       <br />
 
-      <p>
-        Don't have an account?
-      </p>
+      <p>Don't have an account?</p>
 
       <button onClick={() => navigate("/register")}>
         Register
       </button>
-
     </div>
   );
 }
