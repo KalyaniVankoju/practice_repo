@@ -19,19 +19,9 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     subjects: {
-      type: [String],
-      validate: {
-        validator: function (value) {
-          // Requires subjects to be non-empty only if the role is TUTOR
-          if (this.role === 'TUTOR') {
-            return Array.isArray(value) && value.length > 0;
-          }
-          // Enforces that non-TUTOR users cannot have subjects assigned
-          return !value || value.length === 0;
-        },
-        message: 'Subjects are required for TUTORs and must be empty for other roles.',
-      },
-    },
+  type: [String],
+  default: [],
+},
   },
   {
     timestamps: true,

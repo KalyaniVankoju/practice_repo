@@ -5,14 +5,27 @@ export const signup = async (req, res) => {
   try {
     const { username, password, role } = req.body;
 
-    // 1. Validate input
     if (!username || !password || !role) {
       return res.status(400).json({
         message: 'Username, password and role are required'
       });
     }
 
-    // 2. Check if username already exists
+    const normalizedRole = role.toUpperCase();
+
+    const allowedRoles = [
+      'STUDENT',
+      'WOMAN',
+      'TUTOR',
+      'VOLUNTEER'
+    ];
+
+    if (!allowedRoles.includes(normalizedRole)) {
+      return res.status(400).json({
+        message: 'Invalid role'
+      });
+    }
+
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
@@ -21,17 +34,14 @@ export const signup = async (req, res) => {
       });
     }
 
-    // 3. Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Create user
     const user = await User.create({
       username,
       password: hashedPassword,
-      role
+      role: normalizedRole
     });
 
-    // 5. Send response
     res.status(201).json({
       message: 'User registered successfully',
       user: {
@@ -40,7 +50,6 @@ export const signup = async (req, res) => {
         role: user.role
       }
     });
-
   } catch (error) {
     console.error(error);
 
