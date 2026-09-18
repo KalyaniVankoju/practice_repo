@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
@@ -24,11 +25,18 @@ function Register() {
     }
 
     try {
-      const response = await api.post("/api/auth/register", {
+      const requestData = {
         username,
         password,
         role,
-      });
+      };
+
+      console.log("SENDING TO BACKEND:", requestData);
+
+      const response = await api.post(
+        "/api/auth/register",
+        requestData
+      );
 
       console.log("Register response:", response.data);
 
@@ -37,6 +45,8 @@ function Register() {
       navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);
+      console.log("STATUS:", error.response?.status);
+      console.log("RESPONSE DATA:", error.response?.data);
 
       alert(
         error.response?.data?.message ||
@@ -54,6 +64,7 @@ function Register() {
       <form onSubmit={handleRegister}>
         <div>
           <label>Username</label>
+          <br />
 
           <input
             type="text"
@@ -68,6 +79,7 @@ function Register() {
 
         <div>
           <label>Password</label>
+          <br />
 
           <input
             type="password"
@@ -82,12 +94,15 @@ function Register() {
 
         <div>
           <label>Confirm Password</label>
+          <br />
 
           <input
             type="password"
             placeholder="Confirm password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) =>
+              setConfirmPassword(e.target.value)
+            }
             required
           />
         </div>
@@ -96,27 +111,30 @@ function Register() {
 
         <div>
           <label>Select Role</label>
+          <br />
 
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
             required
           >
-            <option value="">-- Select Role --</option>
+            <option value="">
+              -- Select Role --
+            </option>
 
-            <option value="student">
+            <option value="STUDENT">
               Student
             </option>
 
-            <option value="woman">
+            <option value="WOMAN">
               Woman
             </option>
 
-            <option value="tutor">
+            <option value="TUTOR">
               Tutor
             </option>
 
-            <option value="volunteer">
+            <option value="VOLUNTEER">
               Volunteer
             </option>
           </select>
@@ -139,3 +157,4 @@ function Register() {
 }
 
 export default Register;
+

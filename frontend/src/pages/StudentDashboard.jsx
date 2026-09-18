@@ -27,8 +27,8 @@ function StudentDashboard() {
       console.log("Logged-in student ID:", studentId);
 
       // Get all students
-      const studentsResponse = await api.get("/api/students");
-      setStudents(studentsResponse.data);
+      const profileResponse = await api.get("/api/auth/profile");
+setStudents([profileResponse.data]);
 
       // Get attendance of logged-in student
       const attendanceResponse = await api.get(
