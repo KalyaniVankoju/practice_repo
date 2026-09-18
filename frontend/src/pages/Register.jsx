@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
@@ -23,11 +24,15 @@ function Register() {
       return;
     }
 
+    // Tutors need at least one subject
+    const subjects = role === "TUTOR" ? ["DSA"] : [];
+
     try {
       const response = await api.post("/api/auth/register", {
         username,
         password,
         role,
+        subjects,
       });
 
       console.log("Register response:", response.data);
@@ -102,21 +107,23 @@ function Register() {
             onChange={(e) => setRole(e.target.value)}
             required
           >
-            <option value="">-- Select Role --</option>
+            <option value="">
+              -- Select Role --
+            </option>
 
-            <option value="student">
+            <option value="STUDENT">
               Student
             </option>
 
-            <option value="woman">
+            <option value="WOMAN">
               Woman
             </option>
 
-            <option value="tutor">
+            <option value="TUTOR">
               Tutor
             </option>
 
-            <option value="volunteer">
+            <option value="VOLUNTEER">
               Volunteer
             </option>
           </select>
@@ -139,3 +146,4 @@ function Register() {
 }
 
 export default Register;
+
