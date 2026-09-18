@@ -31,10 +31,7 @@ function Register() {
         role,
       };
 
-      // Subjects are required only for tutors
-      if (role === "TUTOR") {
-        requestData.subjects = ["DSA"];
-      }
+      console.log("SENDING TO BACKEND:", requestData);
 
       const response = await api.post(
         "/api/auth/register",
@@ -48,6 +45,8 @@ function Register() {
       navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);
+      console.log("STATUS:", error.response?.status);
+      console.log("RESPONSE DATA:", error.response?.data);
 
       alert(
         error.response?.data?.message ||
@@ -65,6 +64,7 @@ function Register() {
       <form onSubmit={handleRegister}>
         <div>
           <label>Username</label>
+          <br />
 
           <input
             type="text"
@@ -79,6 +79,7 @@ function Register() {
 
         <div>
           <label>Password</label>
+          <br />
 
           <input
             type="password"
@@ -93,6 +94,7 @@ function Register() {
 
         <div>
           <label>Confirm Password</label>
+          <br />
 
           <input
             type="password"
@@ -109,6 +111,7 @@ function Register() {
 
         <div>
           <label>Select Role</label>
+          <br />
 
           <select
             value={role}
