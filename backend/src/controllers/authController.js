@@ -113,3 +113,30 @@ export const login = async (req, res) => {
     });
   }
 };
+export const getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(
+      req.user.userId,
+      'username role subjects'
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      });
+    }
+
+    res.status(200).json({
+      id: user._id,
+      username: user.username,
+      role: user.role,
+      subjects: user.subjects
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Server error'
+    });
+  }
+};
