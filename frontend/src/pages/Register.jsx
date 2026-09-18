@@ -24,16 +24,22 @@ function Register() {
       return;
     }
 
-    // Tutors need at least one subject
-    const subjects = role === "TUTOR" ? ["DSA"] : [];
-
     try {
-      const response = await api.post("/api/auth/register", {
+      const requestData = {
         username,
         password,
         role,
-        subjects,
-      });
+      };
+
+      // Subjects are required only for tutors
+      if (role === "TUTOR") {
+        requestData.subjects = ["DSA"];
+      }
+
+      const response = await api.post(
+        "/api/auth/register",
+        requestData
+      );
 
       console.log("Register response:", response.data);
 
@@ -92,7 +98,9 @@ function Register() {
             type="password"
             placeholder="Confirm password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) =>
+              setConfirmPassword(e.target.value)
+            }
             required
           />
         </div>
