@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+//THIS IS ATTENDANCE MODEL
 const attendanceSchema = new mongoose.Schema(
   {
     student: {
